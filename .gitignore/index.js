@@ -5,6 +5,6 @@ var prefix = ("!");
 
 bot.login(process.env.TOKEN);
 
-bot.on('ready', fonction() {
+bot.on('ready', function() {
        console.log("Le Bot est en ligne !");
 };
