@@ -31,7 +31,7 @@ bot.on('message', function(message) {
     var args = message.content.substring(prefix.length).split(" ");
     switch (args[0].toLowerCase()) {
 
-        case "join":                                        //join vocal
+        case "join":                                                                            //Rejoindre un vocal
             if (!message.guild) return;
             if (message.member.voiceChannel) {
                 message.member.voiceChannel.join()
@@ -43,7 +43,7 @@ bot.on('message', function(message) {
                 message.reply('Tu dois d\'abord être dans un salon vocal !');
             }
 
-        case "leave":                                       //leave vocal
+        case "leave":                                                                           //Quittter le vocal
             message.member.voiceChannel.leave()
                 message.reply('Déconnecté du salon vocal.')
                 .catch(console.log);
@@ -53,45 +53,71 @@ bot.on('message', function(message) {
                 
         case "play":                                                                            //Commande !play
             if (!args[1]) {
-                message.channel.sendMessage("Donnez un lien !");                                //
+                message.channel.sendMessage("Donnez un lien !");
                 return;
-            }                                                                                   //
-            if (!message.member.voiceChannel) {                                                 //
+            }
+            if (!message.member.voiceChannel) {
                 message.channel.sendMessage("Tu dois d\'abord être dans un salon vocal !");
-                return;                                                                         //
+                return;
             }                                                      
-            if(!servers[message.guild.id]) servers[message.guild.id] = {                        //
+            if(!servers[message.guild.id]) servers[message.guild.id] = {
                 queue: []
-            };                                                                                  //
+            };
             var server = servers[message.guild.id];
             server.queue.push(args[1]);
             if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
                 play(connection, message);
+                message.channel.sendMessage("Musique en cours de lecture...")
             });
             break;
 
         case "skip":                                                                            //Commande !skip
-            var server = servers[message.guild.id];
-            if (server.dispatcher) server.dispatcher.end();                                     //
+            if (message.member.voiceChannel) {
+                
+                var server = servers[message.guild.id];
+                    if (server.dispatcher) server.dispatcher.end();
+                        message.channel.sendMessage("Musique suivante...")
+            } else {
+                message.reply("Tu dois d\'abord être dans un salon vocal !");
+            }
             break;
 
         case "stop":                                                                            //Commande !stop
-            var server = servers[message.guild.id];
-            if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();      //
+            if (message.member.voiceChannel) {
+                var server = servers[message.guild.id];
+                    if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
+                        message.channel.sendMessage("Arrêt de la musique...")
+            } else {
+                message.reply("Tu dois d\'abord être dans un salon vocal !");
+            }
             break;
 
         case "pause":                                                                           //Commande !pause
-            var server = servers[message.guild.id];
-            if (server.dispatcher) server.dispatcher.pause();                                   //
+            if (message.member.voiceChannel) {
+                var server = servers[message.guild.id];
+                if (server.dispatcher) server.dispatcher.pause();
+                    message.channel.sendMessage("Musique en pause...")
+            } else {
+                message.reply("Tu dois d\'abord être dans un salon vocal !");
+            }
             break;
         
         case "resume":                                                                          //Commande !resume
-            var server = servers[message.guild.id];
-            if (server.dispatcher) server.dispatcher.resume();                                  //
+            if (message.member.voiceChannel) {
+                var server = servers[message.guild.id];
+                if (server.dispatcher) server.dispatcher.resume();
+                    message.channel.sendMessage("Reprise de la musique...") 
+            } else {
+                message.reply("Tu dois d\'abord être dans un salon vocal !");
+            }
+            break;
+
+        case "":                                                                                //Bloc vide
+            message.reply("veuillez entrer une commande !");
             break;
 
 
-        default:
+        default:                                                                                //Fausse commande
             message.channel.sendMessage("Cette commande n'éxiste pas.");
     }
 });
