@@ -1,1 +1,16 @@
-
+{
+  "name": "PikaBot",
+  "version": "0.0.1",
+  "description": "Mon bot",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "BigBoss320",
+  "license": "MIT"
+}
