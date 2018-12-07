@@ -10,7 +10,7 @@ let api = "https://fortnite-api.tresmos.xyz/profile/"+plateforme+"/"+pseudo+"?ke
 request({url: api, json: true}, function(error, response, body) {
 let embed = new DiscordRichEmbed()
 .setAuthor(body.info.username+" ("+body.info.plateform+")")
-.setTitle("Statistiques Fortnite Solo")
+.setTitle("Statistiques Fortnite Squad")
 .setThumbnail(body.info.rank)
 .setDescription(body.group.squad.wins+" top 1"+body.group.squad.top3+" top 3\n"+body.group.squad.top10+" top 10"+body.group.squad.top25+" top 25")
 .addField("Top 1/Matchs", body.group.squad.wins+"/"+body.group.squad.matches+" ("+body.group.squad[8]+"%)")
